@@ -1,23 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import TodoForm from './component/TodoForm';
+import Todo from './component/Todo';
+import {React, useState} from 'react';
 
-function App() {
+
+const App = () =>{
+  const [todos, setTodos] = useState([]);
+  const addTodo = (todo) => {
+   // todo <= addTodo (function) <= onSubmit (props) <= TodoForm (Component) <= inputValue
+    setTodos([todo, ...todos]);
+  };
+  const handleDelete = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id))
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <TodoForm onSubmit = {addTodo} />
+      {
+        todos.map((todo) => (
+          <Todo todo = {todo} key = {todo.id} onDelete = { () => handleDelete(todo.id)}/>
+        ))}
     </div>
   );
 }
